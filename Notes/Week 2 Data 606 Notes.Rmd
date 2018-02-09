@@ -1,0 +1,19 @@
+---
+title: "DATA 606 Notes - Week 2"
+author: "Betsy Rosalen"
+date: "February 7, 2018"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+### Open issues: 
+
+<https://github.com/jbryer/DATA606Spring2018/issues>
+
+### Closed issues (i.e. answered):
+
+<https://github.com/jbryer/DATA606Spring2018/issues?q=is%3Aissue+is%3Aclosed>
+
+## Don't use Dual Scales unless you standardize with Z-Scores!

@@ -1,4 +1,9 @@
-# DATA 606 Notes - Week 1 - Jan 21, 2018
+---
+title: "DATA 606 Notes - Week 1"
+output: html_document
+---
+
+# Jan 31, 2018
 
 ## The DATA606 R Package
 
@@ -33,7 +38,7 @@ In RStudio, you can also set the working directory on the Files tab by clicking 
 We will use the lego R package in this class which contains information about every Lego set manufactured from 1970 to 2014, a total of 5710 sets.
 
 ```{r}
-devtools::install_github("seankross/lego")
+#devtools::install_github("seankross/lego")
 library(lego)
 data(legosets)
 ```
