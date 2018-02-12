@@ -1,0 +1,113 @@
+---
+title: "CUNY SPS DATA 606 Homework 1"
+author: "Betsy Rosalen"
+date: "February 11, 2018"
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(openintro)
+data(iris)
+data(heartTr)
+```
+
+## Exercise 1.8
+
+#### (a) What does each row of the data matrix represent?
+
+Each row represents one case or record
+
+#### (b) How many participants were included in the survey?
+
+1691 participants were included in the survey
+
+#### (c) Indicate whether each variable in the study is numerical or categorical. If numerical, identify as continuous or discrete. If categorical, indicate if the variable is ordinal.
+
+variable      | type
+-----         | -----
+sex           | nominal categorical
+age           | discrete numerical
+marital       | nominal categorical
+grossIncome   | ordinal categorical
+smoke         | nominal categorical
+amtWeekends   | discrete numerical
+amtWeekdays   | discrete numerical
+
+## Exercise 1.10
+
+#### (a) Identify the population of interest and the sample in this study.
+
+The population of interest is children between the ages of 5 and 15.
+
+#### (b) Comment on whether or not the results of the study can be generalized to the population, and if the findings of the study can be used to establish causal relationships.
+
+Assuming that the children were randomly selected and randomly assigned to the treatment and control groups, the findings can be generalized at least to the population of children between the ages of 5 and 15 ***from the same geographical region where the children were selected*** because it was a controlled randomized experiment.  I would not generalize outside of this geographical region because cultural differences could play a role in the outcome.
+
+## Exercise 1.28
+
+#### (a) Based on this study, can we conclude that smoking causes dementia later in life? Explain your reasoning.
+
+Because this study is based on observational data and not a randomized controlled experiment we cannot conclude that there is a causal relationship between smoking and dementia later in life, only that there is a correlation.  
+
+#### (b) A friend of yours who read the article says, “The study shows that sleep disorders lead to bullying in school children.” Is this statement justified? If not, how best can you describe the conclusion that can be drawn from this study?
+
+No, we cannot say that there is a causal relationship because, once again, this is based on observational data, not a controlled randomized experiment.  Also the study does not specify what percentage of children with symptoms of sleep disorders have behavioral issues or are identified as bullies, only the other way around. Additionally, if only 1% of students who do not have behavioral or bullying issues have symptoms of sleep disorders and 2% of students who do have these issues have symptoms of sleep disorders that would mean they are "twice as likely", but it would still be a very small percentage and so you couldn't say that "sleep disorders lead to bullying in school children."
+
+## Exercise 1.36
+
+#### (a) What type of study is this?
+
+This study is a controlled randomized experiment.
+
+#### (b) What are the treatment and control groups in this study?
+
+The treatment group are those who are instructed to exercise twice a week and the control group are those who are instructed not to exercise.
+
+#### (c) Does this study make use of blocking? If so, what is the blocking variable?
+
+Yes, this study uses blocking based on age groups.
+
+#### (d) Does this study make use of blinding?
+
+No, blinding is not used because patients know whether or not they are exercising, so they know if they are in the treatment or control group. Assuming that the researchers who perform the mental health exam also know who is assigned to each group there is no blinding there either.  Since the exam is a ***mental*** health exam I guess this could cause some bias depending on how the mental health test is conducted if there is any subjectivity to the mental health measures.
+
+#### (e) Comment on whether or not the results of the study can be used to establish a causal relationship between exercise and mental health, and indicate whether or not the conclusions can be generalized to the population at large.
+
+Yes, the results of this study can be used to establish a causal relationship between exercise and mental health because participants were randomly assigned to treatment groups and they can be generallized to the population because it was a randomized sample of the population.  
+
+#### (f) Suppose you are given the task of determining if this proposed study should get funding. Would you have any reservations about the study proposal?
+
+I might suggest further blocking by gender and would have questions about the type of mental health exam being used, but otherwise no, I would not have any other reservations about the study proposal.
+
+## Exercise 1.48
+
+#### Below are the final exam scores of twenty introductory statistics students. 
+
+57, 66, 69, 71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83, 88, 89, 94
+
+##### Create a box plot of the distribution of these scores.
+
+```{r}
+scores <- c(57, 66, 69, 71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83, 88, 89, 94)
+
+boxplot(scores, horizontal = TRUE)
+
+summary(scores)
+```
+
+
+## Exercise 1.50
+
+
+
+## Exercise 1.56
+
+
+
+## Exercise 1.70
+
+
