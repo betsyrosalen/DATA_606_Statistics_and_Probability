@@ -327,7 +327,7 @@ $(document).ready(function () {
 <h2>Exercise 1.8</h2>
 <section id="a-what-does-each-row-of-the-data-matrix-represent" class="level5">
 <h5>(a) What does each row of the data matrix represent?</h5>
-<p>Each row represents one case or record</p>
+<p>Each row represents one case, observation, or record</p>
 </section>
 <section id="b-how-many-participants-were-included-in-the-survey" class="level5">
 <h5>(b) How many participants were included in the survey?</h5>
@@ -506,9 +506,17 @@ prop.table(table(treat$survived))</code></pre>
 <li><p>What are the claims being tested?</p></li>
 <li><p>The paragraph below describes the set up for such approach, if we were to do it without using statistical software. Fill in the blanks with a number or phrase, whichever is appropriate.</p></li>
 </ol>
-<p>We write alive on cards representing patients who were alive at the end of the study, and dead on cards representing patients who were not. Then, we shu✏e these cards and split them into two groups: one group of size representing treatment, and another group of size representing control. We calculate the difference between the proportion of dead cards in the treatment and control groups (treatment - control) and record this value. We repeat this 100 times to build a distribution centered at . Lastly, we calculate the fraction of simulations where the simulated differences in proportions are . If this fraction is low, we conclude that it is unlikely to have observed such an outcome by chance and that the null hypothesis should be rejected in favor of the alternative.</p>
+<pre class="r"><code>table(treat$survived)</code></pre>
+<pre><code>## 
+## alive  dead 
+##    24    45</code></pre>
+<pre class="r"><code>table(con$survived)</code></pre>
+<pre><code>## 
+## alive  dead 
+##     4    30</code></pre>
+<p>We write alive on <strong>28</strong> cards representing patients who were alive at the end of the study, and dead on <strong>75</strong> cards representing patients who were not. Then, we shuffle these cards and split them into two groups: one group of size <strong>69</strong> representing treatment, and another group of size <strong>34</strong> representing control. We calculate the difference between the proportion of dead cards in the treatment and control groups (treatment - control) and record this value. We repeat this 100 times to build a distribution centered at . Lastly, we calculate the fraction of simulations where the simulated differences in proportions are . If this fraction is low, we conclude that it is unlikely to have observed such an outcome by chance and that the null hypothesis should be rejected in favor of the alternative.</p>
 <ol start="3" type="i">
-<li>What do the simulation results shown below suggest about the e↵ectiveness of the transplant program?</li>
+<li>What do the simulation results shown below suggest about the effectiveness of the transplant program?</li>
 </ol>
 </section>
 </section>
