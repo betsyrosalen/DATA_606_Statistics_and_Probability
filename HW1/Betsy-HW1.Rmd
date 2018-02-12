@@ -17,15 +17,15 @@ data(heartTr)
 
 ## Exercise 1.8
 
-#### (a) What does each row of the data matrix represent?
+#####  (a) What does each row of the data matrix represent?
 
 Each row represents one case or record
 
-#### (b) How many participants were included in the survey?
+#####  (b) How many participants were included in the survey?
 
 1691 participants were included in the survey
 
-#### (c) Indicate whether each variable in the study is numerical or categorical. If numerical, identify as continuous or discrete. If categorical, indicate if the variable is ordinal.
+#####  (c) Indicate whether each variable in the study is numerical or categorical. If numerical, identify as continuous or discrete. If categorical, indicate if the variable is ordinal.
 
 variable      | type
 -----         | -----
@@ -39,57 +39,57 @@ amtWeekdays   | discrete numerical
 
 ## Exercise 1.10
 
-#### (a) Identify the population of interest and the sample in this study.
+#####  (a) Identify the population of interest and the sample in this study.
 
 The population of interest is children between the ages of 5 and 15.
 
-#### (b) Comment on whether or not the results of the study can be generalized to the population, and if the findings of the study can be used to establish causal relationships.
+#####  (b) Comment on whether or not the results of the study can be generalized to the population, and if the findings of the study can be used to establish causal relationships.
 
 Assuming that the children were randomly selected and randomly assigned to the treatment and control groups, the findings can be generalized at least to the population of children between the ages of 5 and 15 ***from the same geographical region where the children were selected*** because it was a controlled randomized experiment.  I would not generalize outside of this geographical region because cultural differences could play a role in the outcome.
 
 ## Exercise 1.28
 
-#### (a) Based on this study, can we conclude that smoking causes dementia later in life? Explain your reasoning.
+#####  (a) Based on this study, can we conclude that smoking causes dementia later in life? Explain your reasoning.
 
 Because this study is based on observational data and not a randomized controlled experiment we cannot conclude that there is a causal relationship between smoking and dementia later in life, only that there is a correlation.  
 
-#### (b) A friend of yours who read the article says, “The study shows that sleep disorders lead to bullying in school children.” Is this statement justified? If not, how best can you describe the conclusion that can be drawn from this study?
+##### (b) A friend of yours who read the article says, “The study shows that sleep disorders lead to bullying in school children.” Is this statement justified? If not, how best can you describe the conclusion that can be drawn from this study?
 
 No, we cannot say that there is a causal relationship because, once again, this is based on observational data, not a controlled randomized experiment.  Also the study does not specify what percentage of children with symptoms of sleep disorders have behavioral issues or are identified as bullies, only the other way around. Additionally, if only 1% of students who do not have behavioral or bullying issues have symptoms of sleep disorders and 2% of students who do have these issues have symptoms of sleep disorders that would mean they are "twice as likely", but it would still be a very small percentage and so you couldn't say that "sleep disorders lead to bullying in school children."
 
 ## Exercise 1.36
 
-#### (a) What type of study is this?
+##### (a) What type of study is this?
 
 This study is a controlled randomized experiment.
 
-#### (b) What are the treatment and control groups in this study?
+##### (b) What are the treatment and control groups in this study?
 
 The treatment group are those who are instructed to exercise twice a week and the control group are those who are instructed not to exercise.
 
-#### (c) Does this study make use of blocking? If so, what is the blocking variable?
+##### (c) Does this study make use of blocking? If so, what is the blocking variable?
 
 Yes, this study uses blocking based on age groups.
 
-#### (d) Does this study make use of blinding?
+##### (d) Does this study make use of blinding?
 
 No, blinding is not used because patients know whether or not they are exercising, so they know if they are in the treatment or control group. Assuming that the researchers who perform the mental health exam also know who is assigned to each group there is no blinding there either.  Since the exam is a ***mental*** health exam I guess this could cause some bias depending on how the mental health test is conducted if there is any subjectivity to the mental health measures.
 
-#### (e) Comment on whether or not the results of the study can be used to establish a causal relationship between exercise and mental health, and indicate whether or not the conclusions can be generalized to the population at large.
+##### (e) Comment on whether or not the results of the study can be used to establish a causal relationship between exercise and mental health, and indicate whether or not the conclusions can be generalized to the population at large.
 
 Yes, the results of this study can be used to establish a causal relationship between exercise and mental health because participants were randomly assigned to treatment groups and they can be generallized to the population because it was a randomized sample of the population.  
 
-#### (f) Suppose you are given the task of determining if this proposed study should get funding. Would you have any reservations about the study proposal?
+##### (f) Suppose you are given the task of determining if this proposed study should get funding. Would you have any reservations about the study proposal?
 
 I might suggest further blocking by gender and would have questions about the type of mental health exam being used, but otherwise no, I would not have any other reservations about the study proposal.
 
 ## Exercise 1.48
 
-#### Below are the final exam scores of twenty introductory statistics students. 
+##### Below are the final exam scores of twenty introductory statistics students. 
 
 57, 66, 69, 71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83, 88, 89, 94
 
-##### Create a box plot of the distribution of these scores.
+#####  Create a box plot of the distribution of these scores.
 
 ```{r}
 scores <- c(57, 66, 69, 71, 72, 73, 74, 77, 78, 78, 79, 79, 81, 81, 82, 83, 83, 88, 89, 94)
@@ -102,12 +102,72 @@ summary(scores)
 
 ## Exercise 1.50
 
+##### Mix-and-match. Describe the distribution in the histograms below and match them to the box plots.
 
+![](https://github.com/betsyrosalen/DATA_606_Statistics_and_Probability/blob/master/HW1/Screen%20Shot%202018-02-11%20at%208.02.26%20PM.png?raw=true)
+
+Histogram (a) is a normal distribution that corresponds to boxplot (2) with about 50% of the values falling between about 58 and 62.
+
+Histogram (b) is a uniform distribution that corresponds to boxplot (3).  There are no outliers and values are distributed evenly throughout the range of 0 to 100.
+
+Histogram (c) is a positively skewed distribution that corresponds to boxplot (1).  The majority of values fall in the lower end of the range between about 0.8 and 2 with a lot of outliers on the upper end of the range above about 3.6.
 
 ## Exercise 1.56
 
+#####  For each of the following, state whether you expect the distribution to be symmetric, right skewed, or left skewed. Also specify whether the mean or median would best represent a typical observation in the data, and whether the variability of observations would be best represented using the standard deviation or IQR. Explain your reasoning.
 
+#####  (a) Housing prices in a country where 25% of the houses cost below $350,000, 50% of the houses cost below $450,000, 75% of the houses cost below $1,000,000 and there are a meaningful number of houses that cost more than $6,000,000.
+
+This is a right skewed distribution since 50 percent of the values fall within the lower 7.5% of the range.  The median would best represent a typical observation since the mean would be thrown off by the many outliers in the top end of the range, and variability would be best described by the IQR since the standard deviation is based on the mean and so would also be thrown off by the outliers.
+
+#####  (b) Housing prices in a country where 25% of the houses cost below $300,000, 50% of the houses cost below $600,000, 75% of the houses cost below $900,000 and very few houses that cost more than $1,200,000.
+
+This is a relatively uniform distribution with about the same number of values in each of the 4 quarters of the range.  Thus the mean and standard deviation or the median and IQR would both make good representations of the typical observation and variability respectively
+
+#####  (c) Number of alcoholic drinks consumed by college students in a given week. Assume that most of these students don’t drink since they are under 21 years old, and only a few drink excessively.
+
+The distribution of the number of alcoholic drinks consumed by college students in a given week is likely right skewed since there is most students don't drink and only a few drink excessively, so the majority of values are at the lower end of the range. A typical observation would best be described by the median and the variability would best be described by the IQR since both or not affected as much by outliers as the mean and standard deviation are.
+
+#####  (d) Annual salaries of the employees at a Fortune 500 company where only a few high level executives earn much higher salaries than all the other employees.
+
+This one is tougher to judge, but I would guess it is normally distributed with just a few outliers on the upper end of the range and very few also at the lower end of the range.  In this case the mean and standard deviation would be the best representations of the typical observation and variability. 
 
 ## Exercise 1.70
 
+##### (a) Based on the mosaic plot, is survival independent of whether or not the patient got a transplant? Explain your reasoning.
 
+No survival seems to be dependent on whether or not the patient received a transplant because the probability of survival increases with a transplant.
+
+##### (b) What do the box plots below suggest about the efficacy (effectiveness) of the heart transplant treatment.
+
+The boxplots suggest that transplants are highly effective at prologing life in patients who are designated an official heart transplant candidate.  
+
+##### (c) What proportion of patients in the treatment group and what proportion of patients in the control group died?
+
+```{r}
+# str(heartTr)
+treat <- subset(heartTr, transplant == 'treatment')
+con <- subset(heartTr, transplant == 'control')
+
+prop.table(table(treat$survived))
+prop.table(table(con$survived))
+```
+
+65.22% of patients in the treatment group died.
+
+88.24% of patients in the control group died.
+
+##### (d) One approach for investigating whether or not the treatment is effective is to use a randomization technique.
+
+i. What are the claims being tested?
+
+
+
+ii. The paragraph below describes the set up for such approach, if we were to do it without using statistical software. Fill in the blanks with a number or phrase, whichever is appropriate.
+
+We write alive on      cards representing patients who were alive at
+the end of the study, and dead on      cards representing patients
+who were not. Then, we shu✏e these cards and split them into two groups: one group of size      representing treatment, and another group of size      representing control. We calculate the difference between the proportion of dead cards in the treatment and control groups (treatment - control) and record this value. We repeat this 100 times to build a distribution centered at      . Lastly, we calculate the fraction of simulations where the simulated differences in proportions are      . If this fraction is low, we conclude that it is unlikely to have observed such an outcome by chance and that the null hypothesis should be rejected in favor of the alternative.
+
+iii. What do the simulation results shown below suggest about the e↵ectiveness of the transplant
+program?

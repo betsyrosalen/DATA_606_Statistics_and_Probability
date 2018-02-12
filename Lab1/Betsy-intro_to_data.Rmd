@@ -64,6 +64,26 @@ as their desired weight, `wtdesire`, `age` in years, and `gender`.
 
 1.  How many cases are there in this data set?  How many variables?  For each 
     variable, identify its data type (e.g. categorical, discrete).
+    
+```{r}
+str(cdc)
+```
+
+There are 20,000 cases and 9 variables in this data set.  
+
+The variables are as follows
+
+variable  | type
+-----     | -----
+genhlth   | ordinal categorical
+exerany   | nominal categorical
+hlthplan  | nominal categorical
+smoke100  | nominal categorical
+height    | discrete numerical
+weight    | discrete numerical
+wtdesire  | discrete numerical
+age       | discrete numerical
+gender    | nominal categorical
 
 We can have a look at the first few entries (rows) of our data with the command
 
@@ -161,6 +181,22 @@ another important idea that we'll return to later.
     interquartile range for each. Compute the relative frequency distribution for
     `gender` and `exerany`. How many males are in the sample? What proportion of
     the sample reports being in excellent health?
+    
+```{r}
+summary(cdc$height)
+summary(cdc$age)
+IQR(cdc$height)
+IQR(cdc$age)
+prop.table(table(cdc$gender))
+prop.table(table(cdc$exerany))
+males <- subset(cdc, gender == 'm')
+dim(males)
+prop.table(table(cdc$genhlth))
+```
+
+##### There are 9569 males in the sample.
+
+##### 23.285% of the sample reports being in excellent health.
 
 The `table` command can be used to tabulate any number of variables that you 
 provide.  For example, to examine which participants have smoked across each 
@@ -182,6 +218,8 @@ We could have accomplished this in two steps by saving the table in one line and
 applying `mosaicplot` in the next (see the table/barplot example above).
 
 3.  What does the mosaic plot reveal about smoking habits and gender?
+
+##### The mosaic plot reveals that the proportion of men who have smoked at least 100 cigarettes in their lifetiome is greater than the proportion of women who have.  
 
 ## Interlude: How R thinks about data
 
@@ -333,10 +371,16 @@ group is hard to say, but right now the mechanics of this are the important
 thing). In principle, you may use as many "and" and "or" clauses as you like 
 when forming a subset.
 
-3.  Create a new object called `under23_and_smoke` that contains all observations 
+4.  Create a new object called `under23_and_smoke` that contains all observations 
     of respondents under the age of 23 that have smoked 100 cigarettes in their 
     lifetime. Write the command you used to create the new object as the answer
     to this exercise.
+    
+```{r}
+under23_and_smoke <- subset(cdc, age < 23 & smoke100 == 1)
+head(under23_and_smoke)
+```
+
 
 ## Quantitative data
 
@@ -396,10 +440,15 @@ multiply by 703. The result is 20,000 BMI values, one for each respondent. This
 is one reason why we like R: it lets us perform computations like this using 
 very simple expressions.
 
-4.  What does this box plot show? Pick another categorical variable from the 
+5.  What does this box plot show? Pick another categorical variable from the 
     data set and see how it relates to BMI. List the variable you chose, why you
     might think it would have a relationship to BMI,  and indicate what the 
     figure seems to suggest. 
+    
+```{r}
+boxplot(bmi ~ cdc$exerany, horizontal=TRUE)
+```
+
 
 Finally, let's make some histograms. We can look at the histogram for the age of
 our respondents with the command
@@ -463,3 +512,84 @@ This is a product of OpenIntro that is released under a
 This lab was adapted for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel 
 from a lab written by Mark Hansen of UCLA Statistics.
 </div>
+
+
+1.  Make a scatterplot of weight versus desired weight. Describe the 
+    relationship between these two variables.
+    
+```{r}
+plot(cdc$weight, cdc$wtdesire)
+```
+
+##### There's a string linear corelation between weight and desired weight.  At the lower end of the range, the weight and desired weight are closer to each other on average,  but as the actual weight gets larger, the corresponding average desired weight dips below the actual weight.  
+
+2.  Let's consider a new variable: the difference between desired weight 
+    (`wtdesire`) and current weight (`weight`). Create this new variable by 
+    subtracting the two columns in the data frame and assigning them to a new 
+    object called `wdiff`.
+    
+```{r}
+# Remove the two outliers who say they want to gain hundreds of pounds first
+clean <- subset(cdc, wtdesire < 400)
+wdiff <- clean$weight - clean$wtdesire
+head(wdiff, 100)
+```
+
+
+3.   What type of data is `wdiff`? If an observation `wdiff` is 0, what does 
+    this mean about the person's weight and desired weight. What if `wdiff` is 
+    positive or negative?
+    
+`wdiff` is an vector of type int.  If the value is 0 it means the person is happy with the weight they are and does not want to change their weight at all, in other words, their weight and desired weight are exactly the same.  If `wdiff` is positive it means that the person would like to lose that number of pounds.  If `wdiff` is negative it means that the person would like to gain that number of pounds.  
+
+4.  Describe the distribution of `wdiff` in terms of its center, shape, and 
+    spread, including any plots you use. What does this tell us about how people 
+    feel about their current weight?
+    
+`wdiff` is a slightly right sewed distribution with the majority of values at or around zero and a larger tail in the positive direction.  50% of people want to lose between 0 and 21 pounds.  25% of people want to gain weight with a maximum desired weight gain of 110 pounds but the vast majority under 50 pounds.  The last 25% want to lose anywhere from 21 to 300 pounds with the vast majority of those between 21 and 100 pounds.  Because most people are at or close to their desired weight we can conclude that most people are happy with their current weight. 
+    
+```{r}
+summary(wdiff)
+```
+
+```{r}
+hist(wdiff, breaks=100)
+```
+
+```{r}
+boxplot(wdiff, horizontal=TRUE)
+```
+
+5.  Using numerical summaries and a side-by-side box plot, determine if men tend
+    to view their weight differently than women.
+    
+```{r}
+men <- subset(clean, gender == 'm')
+women <- subset(clean, gender == 'f')
+
+m_wdiff <- men$weight - men$wtdesire
+f_wdiff <- women$weight - women$wtdesire
+
+summary(m_wdiff)
+summary(f_wdiff)
+```
+
+```{r}
+boxplot(m_wdiff, f_wdiff, horizontal = TRUE)
+```
+
+On average women desire a larger weight loss and much fewer want to gain weight.  
+
+6.  Now it's time to get creative. Find the mean and standard deviation of 
+    `weight` and determine what proportion of the weights are within one 
+    standard deviation of the mean.
+    
+```{r}
+m <- mean(cdc$weight)
+m
+s <- sd(cdc$weight)
+s
+prop.table(table(cdc$weight > (m-s) & cdc$weight < (m+s)))
+```
+
+70.76% of people are within one standard deviation of the mean weight of the sample.
