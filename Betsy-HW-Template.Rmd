@@ -1,0 +1,59 @@
+---
+title: "CUNY SPS DATA 606 Homework 3"
+author: "Betsy Rosalen"
+date: "March 4, 2018"
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 2.8
+
+
+
+#####  (a) 
+
+
+
+#####  (b) 
+
+
+
+#####  (c) 
+
+
+
+```{r}
+
+```
+
+#####  (d) 
+
+
+
+```{r}
+
+```
+
+#####  (e) 
+
+
+
+```{r}
+
+```
+
+#####  (f)  
+
+
+
+```{r}
+
+```
+
+

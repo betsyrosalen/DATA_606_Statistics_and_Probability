@@ -1,0 +1,211 @@
+---
+title: "CUNY SPS DATA 606 Homework 3"
+author: "Betsy Rosalen"
+date: "March 4, 2018"
+output:
+  html_document:
+    theme: cerulean
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(DATA606)
+```
+
+# Chapter 3 - Distributions of Random Variables
+
+Graded: 3.2 (see normalPlot), 3.4, 3.18 (use qqnormsim from lab 3), 3.22, 3.38, 3.42
+
+## Exercise 3.2 Area under the curve, Part II
+
+What percent of a standard normal distribution $N(\mu = 0, \sigma = 1)$ is found in each region? Be sure to draw a graph.
+
+#####  (a) Z > −1.13 
+
+87.1 percent of a standard normal distribution is in the area above Z = −1.13.
+
+```{r}
+normalPlot(mean = 0, sd = 1, bounds = c(-1.13, Inf), tails = FALSE)
+```
+
+#####  (b) Z < 0.18
+
+57.1 percent of a standard normal distribution is in the area below Z = 0.18.
+
+```{r}
+normalPlot(mean = 0, sd = 1, bounds = c(-Inf, 0.18), tails = FALSE)
+```
+
+#####  (c) Z > 8
+
+Approximately 0 percent of a standard normal distribution is in the area above Z = 8.  In a normal distribution any value more than 3 standard distributions away from the mean is extremely rare and over 4 standard distributions away from the mean is so rare as to be negligible.
+
+```{r}
+normalPlot(mean = 0, sd = 1, bounds = c(8, Inf), tails = FALSE)
+```
+
+#####  (d) |Z| < 0.5
+
+38.3 percent of a standard normal distribution is in the area between Z = -0.5 and Z = 0.5.
+
+```{r}
+normalPlot(mean = 0, sd = 1, bounds = c(-0.5, 0.5), tails = FALSE)
+```
+
+## Exercise 3.4 Triathlon times, Part I
+
+In triathlons, it is common for racers to be placed into age and gender groups. Friends Leo and Mary both completed the Hermosa Beach Triathlon, where Leo competed in the Men, Ages 30 - 34 group while Mary competed in the Women, Ages 25 - 29 group. Leo completed the race in 1:22:28 (4948 seconds), while Mary completed the race in 1:31:53 (5513 seconds). Obviously Leo finished faster, but they are curious about how they did within their respective groups. Can you help them? Here is some information on the performance of their groups:
+
+- The finishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a
+standard deviation of 583 seconds.
+- The finishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a
+standard deviation of 807 seconds.
+- The distributions of finishing times for both groups are approximately Normal.
+
+Remember: a better performance corresponds to a faster finish.
+
+#####  (a) Write down the short-hand for these two normal distributions.
+
+- The finishing times of the Men, Ages 30 - 34 group has a mean of 4313 seconds with a
+standard deviation of 583 seconds.
+$$N(\mu=4313, \sigma=583)$$
+- The finishing times of the Women, Ages 25 - 29 group has a mean of 5261 seconds with a
+standard deviation of 807 seconds.
+$$N(\mu=5261, \sigma=807)$$
+
+
+#####  (b) What are the Z-scores for Leo’s and Mary’s finishing times? What do these Z-scores tell you?
+
+```{r}
+LeoZ <- (4948-4313)/583
+round(LeoZ, 2)
+MaryZ <- (5513-5261)/807
+round(MaryZ, 2)
+```
+
+The Z-score for Leo's finishing time is 1.09 which means he finished 1.09 standard deviations above the mean for his age group. 
+
+The Z-score for Mary's time is 0.31 which means she finished 0.31 standard deviations above the mean for her age group. 
+
+#####  (c) Did Leo or Mary rank better in their respective groups? Explain your reasoning.
+
+Leo ranked better than Mary for his age group since his Z-score was much higher than Mary's.  The higher the Z-score the higher the percentile rank.
+
+#####  (d) What percent of the triathletes did Leo finish faster than in his group?
+
+```{r}
+round(pnorm(LeoZ)*100, 2)
+```
+
+Leo finished faster then 86.2 percent of the other competitors in his age group.
+
+#####  (e) What percent of the triathletes did Mary finish faster than in her group?
+
+```{r}
+round(pnorm(MaryZ)*100, 2)
+```
+
+Mary finished faster then 62.26 percent of the other competitors in her age group.
+
+#####  (f) If the distributions of finishing times are not nearly normal, would your answers to parts (b) - (e) change? Explain your reasoning.
+
+Yes, my answers to parts (b) - (e) would change if the distribution is not normal. You could still calculate a Z-score, but you cannot use Z-scores to estimate probabilities and percentile ranks in a non-normal distribution. In that case you would need to know more information about the distribution than just the mean and standard deviation. If you had the total number of competiotors in their age groups and the number of competitors who did better or worse than Leo and Mary then you could calculate a percentile rank.   
+
+## Exercise 3.18 Heights of female college students
+
+Below are heights of 25 female college students.
+
+```{r}
+heights <- c(54,55,56,56,57,58,58,59,60,60,60,61,61,62,62,63,63,63,64,65,65,67,67,69,73)
+heights
+```
+
+#####  (a) The mean height is 61.52 inches with a standard deviation of 4.58 inches. Use this information to determine if the heights approximately follow the 68-95-99.7% Rule.
+
+Yes, the heghts of female college students in this dataset do seem to follow the 68-95-99.7% Rule since they appear to be normally distributed.  In fact they follow a normal pattern even more closely than the simulations.
+
+```{r}
+set.seed(250)
+qqnormsim(heights)
+```
+
+#####  (b) Do these data appear to follow a normal distribution? Explain your reasoning using the graphs
+provided below.
+
+![HistVsQQPlot](HistVsQQPlot.png)
+
+
+
+
+## Exercise 3.22 Defective rate
+
+A machine that produces a special type of transistor (a component of computers) has a 2% defective rate. The production is considered a random process where each transistor is independent of the others.
+
+#####  (a) What is the probability that the 10th transistor produced is the first with a defect?
+
+```{r}
+
+```
+
+#####  (b) What is the probability that the machine produces no defective transistors in a batch of 100?
+
+```{r}
+
+```
+
+#####  (c) On average, how many transistors would you expect to be produced before the first with a
+defect? What is the standard deviation?
+
+```{r}
+
+```
+
+#####  (d) Another machine that also produces transistors has a 5% defective rate where each transistor is produced independent of the others. On average how many transistors would you expect to be produced with this machine before the first with a defect? What is the standard deviation?
+
+```{r}
+
+```
+
+#####  (e) Based on your answers to parts (c) and (d), how does increasing the probability of an event affect the mean and standard deviation of the wait time until success?
+
+## Exercise 3.38 Male children
+
+While it is often assumed that the probabilities of having a boy or a girl are the same, the actual probability of having a boy is slightly higher at 0.51. Suppose a couple plans to have 3 kids.
+
+#####  (a) Use the binomial model to calculate the probability that two of them will be boys.
+
+```{r}
+
+```
+
+#####  (b) Write out all possible orderings of 3 children, 2 of whom are boys. Use these scenarios to calculate the same probability from part (a) but using the addition rule for disjoint outcomes. Confirm that your answers from parts (a) and (b) match.
+
+```{r}
+
+```
+
+#####  (c) If we wanted to calculate the probability that a couple who plans to have 8 kids will have 3 boys, briefly describe why the approach from part (b) would be more tedious than the approach from part (a).
+
+## Exercise 3.42 Serving in volleyball
+
+A not-so-skilled volleyball player has a 15% chance of making the serve, which involves hitting the ball so it passes over the net on a trajectory such that it will land in the opposing team’s court. Suppose that her serves are independent of each other. 
+
+#####  (a) What is the probability that on the 10th try she will make her 3rd successful serve?
+
+```{r}
+
+```
+
+#####  (b) Suppose she has made two successful serves in nine attempts. What is the probability that her 10th serve will be successful?
+
+```{r}
+
+```
+
+#####  (c) Even though parts (a) and (b) discuss the same scenario, the probabilities you calculated should be different. Can you explain the reason for this discrepancy?
+
+```{r}
+
+```
+

@@ -2,9 +2,11 @@
 title: "The normal distribution"
 output:
   html_document:
-    theme: cerulean
-    highlight: pygments
     css: ./lab.css
+    highlight: pygments
+    theme: cerulean
+editor_options: 
+  chunk_output_type: inline
 ---
 
 In this lab we'll investigate the probability distribution that is most central
@@ -44,8 +46,23 @@ mdims <- subset(bdims, sex == 1)
 fdims <- subset(bdims, sex == 0)
 ```
 
-1.  Make a histogram of men's heights and a histogram of women's heights.  How 
-    would you compare the various aspects of the two distributions?
+1.  Make a histogram of men's heights and a histogram of women's heights. How would 
+    you compare the various aspects of the two distributions? 
+    
+    Both the women's heights and men's heights histograms look relatively normal with a slightly smaller spread for women at about 40 cm vs. a 45 cm spread for men's heights.  We can estimate that the mean height is about 10 cm lower for women with the spread ranging from 145-185 cm vs. a spread of 155-200 cm for men.  The histrogram shows a lot of variation when set to 15 bins, but looks more normal when set to have slightly larger bins.  See the second set of histograms below. 
+
+```{r}
+# library(ggplot2)
+hist(mdims$hgt, breaks = 15)
+hist(fdims$hgt, breaks = 15)
+```
+
+
+```{r}
+# library(ggplot2)
+hist(mdims$hgt, breaks = 10)
+hist(fdims$hgt, breaks = 10)
+```
 
 ## The normal distribution
 
@@ -62,6 +79,7 @@ and then calculate some statistics that will be referenced later.
 ```{r female-hgt-mean-sd, eval=TRUE}
 fhgtmean <- mean(fdims$hgt)
 fhgtsd   <- sd(fdims$hgt)
+summary(fdims$hgt)
 ```
 
 Next we make a density histogram to use as the backdrop and use the `lines` 
@@ -77,8 +95,8 @@ differ in their y-axis. You can verify this by comparing the frequency histogram
 you constructed earlier and the density histogram created by the commands below.
 
 ```{r hist-height, eval=TRUE}
-hist(fdims$hgt, probability = TRUE)
-x <- 140:190
+hist(fdims$hgt, probability = TRUE, ylim = c(0, 0.06))
+x <- 145:185
 y <- dnorm(x = x, mean = fhgtmean, sd = fhgtsd)
 lines(x = x, y = y, col = "blue")
 ```
@@ -98,6 +116,8 @@ the histogram function: `ylim = c(0, 0.06)`.
 
 2.  Based on the this plot, does it appear that the data follow a nearly normal 
     distribution?
+    
+    Yes, the plot shows a nearly normal distribution with the normal curve falling approximately in the same place as the tops of the bars of the histogram although the center of the histogram seems just slightly squashed down and more spread out compared to the normal curve.
 
 
 ## Evaluating the normal distribution
@@ -144,15 +164,39 @@ normal distribution is to compare it to many more plots using the following
 function. It may be helpful to click the zoom button in the plot window.
 
 ```{r qqnormsim, eval=TRUE}
+set.seed(250)
 qqnormsim(fdims$hgt)
 ```
 
 4.  Does the normal probability plot for `fdims$hgt` look similar to the plots 
     created for the simulated data?  That is, do plots provide evidence that the
     female heights are nearly normal?
+    
+    Yes, the simulated plots show evidence that the female heights are nearly normal.  The normal probability plot for `fdims$hgt` looks very similar to the simulated plots which almost all have a similar variability in the tails to the variability in the `fdims$hgt` plot.
 
 5.  Using the same technique, determine whether or not female weights appear to 
     come from a normal distribution.
+    
+    Women's weights are much less 'normal' in their distribution than women's heights.  None of the simulations include 'outliers' like the two that are above 100 kg in the original data.  All the simulations range from about 35 or 40 to 90 kg while the original data ranges from about 40 to 105 kg.  Additionally, the orignal data follows a curve (that indicates a right skew) rather than a straight line and has fewer values falling from 2-3 standard deviations above the mean than the simulations do.
+    
+```{r}
+summary(fdims$wgt)
+```
+
+
+```{r hist-weight, eval=TRUE}
+fwgtmean <- mean(fdims$wgt)
+fwgtsd <- sd(fdims$wgt)
+hist(fdims$wgt, probability = TRUE)
+x <- 40:110
+y <- dnorm(x = x, mean = fwgtmean, sd = fwgtsd)
+lines(x = x, y = y, col = "blue")
+```
+
+```{r qqnormsimwt, eval=TRUE}
+set.seed(250)
+qqnormsim(fdims$wgt)
+```
 
 ## Normal probabilities
 
@@ -200,6 +244,41 @@ theoretical probabilities will be.
     those probabilities using both the theoretical normal distribution as well 
     as the empirical distribution (four probabilities in all).  Which variable,
     height or weight, had a closer agreement between the two methods?
+    
+    Because women's heights more closely approximate a normal distribution than women's weights, the probabilities for height using the theoretical normal distribution vs. the empirical distribution are closer to each other than the probabilities for weight using the theoretical vs empircal caculations. In the example below although the absolute change in probability is greater for the height question at about 3.3 percent vs. 2.2 percent change for the weights, the percent of change is dramatically higher in the weight question.  There's a 12% difference between the two calculations for the height question vs. a 48%  percent difference between the two calculations for the weight question.  
+
+What is the probability that a randomly selected woman is from 165 to 170 cm (about 5'5" to 5'7") tall?  
+
+```{r pnormhtq, eval=TRUE}
+ht1 <- pnorm(q = 170, mean = fhgtmean, sd = fhgtsd) - pnorm(q = 165, mean = fhgtmean, sd = fhgtsd)
+ht1
+```
+
+```{r probabilityhtq, eval=TRUE}
+ht2 <- sum(fdims$hgt > 165 & fdims$hgt < 170) / length(fdims$hgt)
+ht2
+```
+
+```{r}
+abs((ht1-ht2)/max(ht1,ht2))
+```
+
+
+What is the probability that a randomly selected woman is over 175 pounds (approximately 80 kg)?
+
+```{r pnormwrtq, eval=TRUE}
+wt1 <- 1 - pnorm(q = 80, mean = fwgtmean, sd = fwgtsd)
+wt1
+```
+
+```{r probabilitywtq, eval=TRUE}
+wt2 <- sum(fdims$wgt > 80) / length(fdims$wgt)
+wt2
+```
+
+```{r}
+abs((wt1-wt2)/max(wt1,wt2))
+```
 
 * * *
 
@@ -213,28 +292,54 @@ theoretical probabilities will be.
     generate the plots in R to check.
 
     **a.** The histogram for female biiliac (pelvic) diameter (`bii.di`) belongs
-    to normal probability plot letter ____.
+    to normal probability plot letter **_B_**.
 
     **b.** The histogram for female elbow diameter (`elb.di`) belongs to normal 
-    probability plot letter ____.
+    probability plot letter **_C_**.
 
     **c.** The histogram for general age (`age`) belongs to normal probability 
-    plot letter ____.
+    plot letter **_D_**.
 
     **d.** The histogram for female chest depth (`che.de`) belongs to normal 
-    probability plot letter ____.
+    probability plot letter **_A_**.
 
--   Note that normal probability plots C and D have a slight stepwise pattern.  
+-   Note that normal probability plots C and D have a slight step-wise pattern.  
     Why do you think this is the case?
+    
+    Rounding off numbers would lead to a stepwise pattern in the data.  Since D corresponds to age, which would be rounded off to a whole number, that makes sense.  Not really sure why elbow diameter would be rounded any more than pelvic diameter or chest depth though.
 
 -   As you can see, normal probability plots can be used both to assess 
     normality and visualize skewness.  Make a normal probability plot for female 
     knee diameter (`kne.di`).  Based on this normal probability plot, is this 
     variable left skewed, symmetric, or right skewed?  Use a histogram to confirm 
     your findings.
+    
+    Female knee diameter is slightly right skewed with more values ffalling on the lower end of the range and a longer tail on the right.
+    
+```{r}
+qqnorm(fdims$kne.di)
+```
 
+The histogram below confirms this finding.
+
+```{r}
+hist(fdims$kne.di)
+```
+
+
+### Image for question 1
 
 ![histQQmatch](more/histQQmatch.png)
+
+```{r doublecheck}
+# Double check answers for question 1
+# Yay!  Got it right!
+qqnorm(fdims$bii.di, main = "Normal Q-Q Plot for Female Pelvic Diameter")
+qqnorm(fdims$elb.di, main = "Normal Q-Q Plot for Female Elbow Diameter")
+qqnorm(fdims$age, main = "Normal Q-Q Plot for General Age")
+qqnorm(fdims$che.de, main = "Normal Q-Q Plot for Female Chest Depth")
+```
+
 
 <div id="license">
 This is a product of OpenIntro that is released under a 
