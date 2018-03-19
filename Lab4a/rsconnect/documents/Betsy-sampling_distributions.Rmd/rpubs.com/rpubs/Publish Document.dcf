@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/371011/5fde80e033744f84bbcdbaaa8ec843f5
+bundleId: https://api.rpubs.com/api/v1/document/371011/5fde80e033744f84bbcdbaaa8ec843f5
+url: http://rpubs.com/betsyrosalen/371011
+when: 1521410831.9818

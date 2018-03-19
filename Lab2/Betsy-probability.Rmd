@@ -1,5 +1,7 @@
 ---
 title: "Probability"
+author: "Betsy Rosalen"
+date: "February 18, 2018"
 output:
   html_document:
     theme: cerulean
@@ -201,7 +203,7 @@ chip that says "head"" is 20%, and "tail" is 80%.
     
     As expected approximately 20% of the flips came up heads in my simulation.
     
-```{r table-sim-unfair-coin, eval=TRUE}
+    ```{r table-sim-unfair-coin, eval=TRUE}
 sim_unfair_coin
 table(sim_unfair_coin)
 ```
@@ -239,7 +241,7 @@ we need to align both their shooting percentage and the number of attempted shot
     sample 133 shots. Assign the output of this simulation to a new object called
     `sim_basket`.
     
-```{r sim-basket, eval=TRUE}
+    ```{r sim-basket, eval=TRUE}
 outcomes <- c("H", "M")
 sim_basket <- sample(outcomes, size = 133, prob = c(.45, .55), replace = TRUE)
 ```
@@ -274,16 +276,27 @@ Using `calc_streak`, compute the streak lengths of `sim_basket`.
 -   Describe the distribution of streak lengths. What is the typical streak 
     length for this simulated independent shooter with a 45% shooting percentage?
     How long is the player's longest streak of baskets in 133 shots?
+    
+    The Sim's typical streak length was zero like Kobe's.  The sim had about the same number of streaks of length zero and progressively less at greater streak lengths just like Kobe's.  The smallest quantities are at the longest streak lengths with about 1 streak at that length.
+
+    ```{r calc-streak-sim, eval=TRUE}
+sim_streak <- calc_streak(sim_basket)
+barplot(table(sim_streak))
+```
 
 -   If you were to run the simulation of the independent shooter a second time, 
     how would you expect its streak distribution to compare to the distribution 
     from the question above? Exactly the same? Somewhat similar? Totally 
     different? Explain your reasoning.
+    
+    If I were to run the simulation again I would expect it to be similar, but not exaxctly the same. Since it is a random simulation with the same probability as the first time, the results should be similar each time it is run and similar to Kobe's distribution as well.
 
 -   How does Kobe Bryant's distribution of streak lengths compare to the 
     distribution of streak lengths for the simulated shooter? Using this 
     comparison, do you have evidence that the hot hand model fits Kobe's 
     shooting patterns? Explain.
+    
+    Kobe Bryant's distribution of streak lengths is very similar to the simulation suggesting that the 'hot hand' phenomenon has no factual basis and that longer streaks of baskets are due to chance alone.  If the 'hot hands' theory was true then we would expect there to be more streaks of longer length in Kobe's distribution.  In fact the opposite happened in our first simulation.  We would expect additional simulations would also be similar, but could be more or less.
 
 <div id="license">
 This is a product of OpenIntro that is released under a 
@@ -291,28 +304,3 @@ This is a product of OpenIntro that is released under a
 This lab was adapted for OpenIntro by Andrew Bray and Mine &Ccedil;etinkaya-Rundel
 from a lab written by Mark Hansen of UCLA Statistics.
 </div>
-
-1. Describe the distribution of streak lengths. What is the typical streak 
-    length for this simulated independent shooter with a 45% shooting percentage?
-    How long is the player's longest streak of baskets in 133 shots?
-    
-    The Sim's typical streak length was zero like Kobe's.  The sim had about the same number of streaks of length zero and progressively less at greater streak lengths just like Kobe's.  The smallest quantities are at the longest streak lengths with about 1 streak at that length.
-
-```{r calc-streak-sim, eval=TRUE}
-sim_streak <- calc_streak(sim_basket)
-barplot(table(sim_streak))
-```
-
-2. If you were to run the simulation of the independent shooter a second time, 
-    how would you expect its streak distribution to compare to the distribution 
-    from the question above? Exactly the same? Somewhat similar? Totally 
-    different? Explain your reasoning.
-    
-    If I were to run the simulation again I would expect it to be similar, but not exaxctly the same. Since it is a random simulation with the same probability as the first time, the results should be similar each time it is run and similar to Kobe's distribution as well.
-
-3. How does Kobe Bryant's distribution of streak lengths compare to the 
-    distribution of streak lengths for the simulated shooter? Using this 
-    comparison, do you have evidence that the hot hand model fits Kobe's 
-    shooting patterns? Explain.
-    
-    Kobe Bryant's distribution of streak lengths is very similar to the simulation suggesting that the 'hot hand' phenomenon has no factual basis and that longer streaks of baskets are due to chance alone.  If the 'hot hands' theory was true then we would expect there to be more streaks of longer length in Kobe's distribution.  In fact the opposite happened in our first simulation.  We would expect additional simulations would also be similar, but could be more or less.
