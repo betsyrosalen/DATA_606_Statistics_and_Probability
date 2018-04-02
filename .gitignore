@@ -1,2 +1,10 @@
-
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.Rproj
 .DS_Store
+*.Rproj
+.dcf
+.DS_Store
+*.DS_Store
