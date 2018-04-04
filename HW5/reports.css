@@ -1,0 +1,56 @@
+
+body {background-color: #ffffff;}
+
+p { font-family: "Futura", "Trebuchet MS", "Univers", Helvetica, sans-serif;
+    font-size: 14px;
+    padding-left: 10px;}
+	
+img { padding: 15px 25px 15px 25px;}
+
+a:link {	color: #0086b3;}
+a:visited {	color: #e29900;}
+a:hover {	color: #ffbf00;}
+a:active {	color: #ffbf00;}
+
+ul {list-style-type: disc;}
+ol {list-style-type: decimal}
+	
+ul, ol {padding-left: 25px;}
+
+ul li, ol li {	margin: 0.5em 1.0em 1.5em;
+				line-height: 20%;}
+
+hr {border: 1px solid #d9d9d9;}
+
+
+h1, h2 {background: #c2e4f0;
+		color: #24748f;
+		font-family: "Futura", "Trebuchet MS", "Univers", Helvetica, sans-serif;
+		padding: 5px 10px 5px 10px;
+		font-weight: bold;}
+		
+h3, h4, h5, h6 {
+	color: #24748f;
+    font-family: "Futura", "Trebuchet MS", "Univers", Helvetica, sans-serif;
+	padding: 5px 10px 5px 10px;
+	font-weight: medium;
+}
+
+h1 {font-size: 26px;}
+h2 {font-size: 24px;}
+h3 {font-size: 20px;}
+h4 {font-size: 18px;}
+h5 {font-size: 16px;}
+h6 {font-size: 14px;}
+
+.midcenter {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
+.footer {
+    color: black; background: #E8E8E8;
+    position: fixed; top: 90%;
+    text-align:center; width:100%;
+}
