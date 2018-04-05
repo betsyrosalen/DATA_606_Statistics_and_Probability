@@ -99,9 +99,5 @@ The General Social Survey collects data on demographics, education, and work, am
 
 #####  (d) What is the conclusion of the test?
 
-### Heading Three
 
-#### Heading Four
-
-###### Heading Six
 
