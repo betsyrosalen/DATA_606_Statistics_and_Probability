@@ -185,7 +185,7 @@ ub
 
 #####  (c) Do your results from the hypothesis test and the confidence interval agree? Explain.
 
-Yes, the average IQ of mother's in teh general population does not fall within the 90% confidence interval of the mean IQ of mothers of gifted children.
+Yes, the average IQ of mother's in the general population does not fall within the 90% confidence interval of the mean IQ of mothers of gifted children.
 
 ## Exercise 4.34 CLT
 
