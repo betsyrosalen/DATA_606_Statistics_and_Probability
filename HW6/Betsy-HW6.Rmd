@@ -126,6 +126,10 @@ Woods | Cultivated grassplot | Deciduous forests | Other | Total
 
 #####  (a) Write the hypotheses for testing if barking deer prefer to forage in certain habitats over others.
 
+$H_0: $ - Barking deer do not prefer one habitat over another for foraging.
+
+$H_A: $ - Barking Deer do prefer one or more habitats over other habitats for foraging.
+
 #####  (b) What type of test can we use to answer this research question?
 
 #####  (c) Check if the assumptions and conditions required for this test are satisfied.
@@ -160,4 +164,4 @@ Clinical depression | $\leq$ 1 cup/week | 2-6 cups/week | 1 cup/day | 2-3 cups/d
 
 (f) What is the conclusion of the hypothesis test?
 
-(g) One of the authors of this study was quoted on the NYTimes as saying it was “too early to recommend that women load up on extra coffee” based on just this study.64 Do you agree with this statement? Explain your reasoning.
+(g) One of the authors of this study was quoted on the NYTimes as saying it was "too early to recommend that women load up on extra coffee" based on just this study. Do you agree with this statement? Explain your reasoning.

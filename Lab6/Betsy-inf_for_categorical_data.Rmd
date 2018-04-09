@@ -343,14 +343,36 @@ from 2005 and 2012 for 39 countries.
     *Hint:* Create a new data set for respondents from Spain. Form
     confidence intervals for the true proportion of athiests in both
     years, and determine whether they overlap.
+    
+    ##### Spain
+    
+    ```{r}
+spain <- subset(atheism, nationality == "Spain")
+    
+inference(spain$response, as.factor(spain$year), est = "proportion", type = "ci", method = "theoretical", success = "atheist", order = c("2012","2005"))
+```
+
+    Independence, normality and success-failure conditions are sastisfied, so we can use a confidence interval for inference.  However our confidence interval for the difference of proportions for 2005 vs. 2012 includes zero, so we cannot be sure that there is any real difference between 2005 and 2012.  There is not enough convincing evidence to support a claim that Spain has seen a change in its atheism index between 2005 and 2012.
 
     **b.** Is there convincing evidence that the United States has seen a
     change in its atheism index between 2005 and 2012?
+    
+    ##### United States
+    
+    ```{r}
+US <- subset(atheism, nationality == "United States")
+    
+inference(US$response, as.factor(US$year), est = "proportion", type = "ci", method = "theoretical", success = "atheist", order = c("2012","2005"))
+```
+
+    Independence, normality and success-failure conditions are sastisfied, so we can use a confidence interval for inference.  Our confidence interval shows a difference of 0.0251 to 0.0547 in the difference between proportions for 2005 vs. 2012, so we can be 95% confident that there is a true difference  between proportions for 2005 and 2012.  There is convincing evidence to support a claim that the US has seen a change in its atheism index between 2005 and 2012 of between 2.5% and 5.5%.
 
 -   If in fact there has been no change in the atheism index in the countries 
     listed in Table 4, in how many of those countries would you expect to 
     detect a change (at a significance level of 0.05) simply by chance?\
     *Hint:* Look in the textbook index under Type 1 error.
+    
+    Using a .05 significance level, I would expect to detect an error simply by chance in 5% of the cases, and since we have 57 countries in the study, and 57 x .05 = `r 57*.05`, I would expect to get a type 1 error in 2 or 3 countries.
 
 -   Suppose you're hired by the local government to estimate the proportion of 
     residents that attend a religious service on a weekly basis. According to 
@@ -360,6 +382,15 @@ from 2005 and 2012 for 39 countries.
     guidelines?\
     *Hint:* Refer to your plot of the relationship between $p$ and margin of 
     error. Do not use the data set to answer this question.
+    
+    You would need to sample 9604 residents to ensure that your margin of error would never go above 1% if you have no idea what the proportion will be.  
+    
+    ```{r}
+p <- .5
+me <- .01
+n <- 1.96^2 * (p*(1-p))/me^2
+n
+```
 
 
 <div id="license">
