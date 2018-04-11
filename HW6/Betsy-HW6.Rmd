@@ -122,22 +122,52 @@ Microhabitat factors associated with forage and bed sites of barking deer in Hai
 
 Woods | Cultivated grassplot | Deciduous forests | Other | Total
 ------ | ------ | ------ | ------ | ------
-4 | 16 | 67 | 345 | 426
+4 | 16 | 61 | 345 | 426
 
 #####  (a) Write the hypotheses for testing if barking deer prefer to forage in certain habitats over others.
 
-$H_0: $ - Barking deer do not prefer one habitat over another for foraging.
+$H_0$: - Barking deer do not prefer one habitat over another for foraging.  The observed counts reflect the same proportions as the island's habitat proportions.
 
-$H_A: $ - Barking Deer do prefer one or more habitats over other habitats for foraging.
+$H_A$: - Barking Deer do prefer one or more habitats over other habitats for foraging.
 
 #####  (b) What type of test can we use to answer this research question?
 
+A chi-square test can be used to answer this research question.
+
 #####  (c) Check if the assumptions and conditions required for this test are satisfied.
+
+```{r}
+# Check expected outcomes
+
+# woods 4.8% 
+w <- round(426 * .048)
+w
+# cultivated grass plots 14.7% 
+cg <- round(426 * .147)
+cg
+# deciduous forests 39.6%
+df <- round(426 * .396)
+df
+# other
+o <- round(426 * (1-(.048 + .147 + .396)))
+o
+```
+
+The conditions are satisfied, since the expected counts are all more than 5 and each case is assumed to be independent.  
 
 #####  (d) Do these data provide convincing evidence that barking deer prefer to forage in certain habitats over others? Conduct an appropriate hypothesis test to answer this research question.
 
+```{r}
+chi <- (4-w)^2/w + (16-cg)^2/cg + (61-df)^2/df + (345-o)^2/o
+chi
+```
 
+```{r}
+options(scipen = 999)
+pchisq(chi, 3, lower.tail = FALSE)
+```
 
+Our test-statistic of `r chi` has a p-value so small that the probability that barking deer do not have a foraging preference is basically zero.  We reject the null hypothesis in favor of the alternative hypothesis.  Barking deer clearly have a preference for foraging habitat.
 
 ## Exercise 6.48 Coffee and Depression
 
@@ -148,20 +178,53 @@ Researchers conducted a study investigating the relationship between caffeinated
 
 Clinical depression | $\leq$ 1 cup/week | 2-6 cups/week | 1 cup/day | 2-3 cups/day | $\leq$ 4 cups/day | Total
 ----- | ----- | ----- | -----  |  ----- | -----  |  ----- | ----- 
-**Yes**   | 670     | 373   | 905     | 564     | 95    | 2,607
-**No**    | 11,545  | 6,244 | 16,329  | 11,726  | 2,288 | 48,132
-**Total** | 12,215  | 6,617 | 17,234  | 12,290  | 2,383 | 50,739
+**Yes**   | 670     | ***373*** | 905     | 564     | 95    | 2,607
+**No**    | 11,545  | 6,244     | 16,329  | 11,726  | 2,288 | 48,132
+**Total** | 12,215  | 6,617     | 17,234  | 12,290  | 2,383 | 50,739
 
-(a) What type of test is appropriate for evaluating if there is an association between coffee intake and depression?
+#####  (a) What type of test is appropriate for evaluating if there is an association between coffee intake and depression?
 
-(b) Write the hypotheses for the test you identified in part (a).
+We can use a chi-square test for two-way tables to evaluate if there is an association between coffee intake and depression.
 
-(c) Calculate the overall proportion of women who do and do not suffer from depression.
+#####  (b) Write the hypotheses for the test you identified in part (a).
 
-(d) Identify the expected count for the highlighted cell, and calculate the contribution of this cell to the test statistic, i.e. (Observed − Expected)2/Expected.
+$H_0$: - There is no association between coffee intake and depression.
 
-(e) The test statistic is #2 = 20.93. What is the p-value?
+$H_A$: - There is an association between coffee intake and depression.
 
-(f) What is the conclusion of the hypothesis test?
+#####  (c) Calculate the overall proportion of women who do and do not suffer from depression.
+
+```{r}
+# Women who suffer from depression
+do <- 2607/50739
+do
+# Women who do not suffer from depression
+not <- 48132/50739
+not
+```
+
+#####  (d) Identify the expected count for the highlighted cell, and calculate the contribution of this cell to the test statistic, i.e. (Observed − Expected)2/Expected.
+
+```{r}
+expected <- round(6617 * do)
+expected
+```
+```{r}
+(373 - expected)^2/expected
+```
+
+#####  (e) The test statistic is $x^2 = 20.93$. What is the p-value?
+
+```{r}
+df <- (2-1) * (5-1)
+pval <- pchisq(20.93, df, lower.tail = FALSE)
+pval
+```
+
+#####  (f) What is the conclusion of the hypothesis test?
+
+Our p-value `r round(pval, 5)` is so small that we would reject the null hypothesis in favor of the alternative hypothesis.  There is a statistical association between coffee consumption and depression.  
 
 (g) One of the authors of this study was quoted on the NYTimes as saying it was "too early to recommend that women load up on extra coffee" based on just this study. Do you agree with this statement? Explain your reasoning.
+
+Yes, I would agree that it is "too early to recommend that women load up on extra coffee" based on just this study. Just because we know there is an association, we don't know if there is a causal relationship and we cannot determine a causal relationship from this study since it is observational rather than experimental.  Maybe women want to drink more coffee when they are happier rather than drinking more coffee causing them to be happier.  
