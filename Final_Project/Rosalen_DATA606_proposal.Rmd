@@ -77,13 +77,13 @@ Data was collected by [FiveThirtyEight](http://fivethirtyeight.com/) through [Su
 
 **What is the response variable, and what type is it (numerical/categorical)?**
 
-The response variable is the number of cuisines a respondent says they have tried.
+The response variable is numerical and is the number of cuisines a respondent says they have tried which is calculated from the data by counting the number of cuisines rated by the respondent.
 
 ### Explanatory 
 
 **What is the explanatory variable, and what type is it (numerical/categorical)?**
 
-The explanatory variables are Gender (categorical) and household income (quantitative?).
+The explanatory variables are Gender (categorical) and household income (numerical).
 
 ### Relevant summary statistics 
 
