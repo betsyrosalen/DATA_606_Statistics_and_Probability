@@ -1,0 +1,124 @@
+---
+title: DATA 606 Data Project Proposal
+author: "Betsy Rosalen"
+date: "April 22, 2018"
+output:
+  html_document:
+    theme: cerulean
+    highlight: null
+    toc: yes
+    css: ./reports.css
+editor_options: 
+  chunk_output_type: inline
+---
+
+### Data Preparation
+
+```{r setup, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+
+# load data from fivethirtyeight.com
+library(tidyverse)
+library(psych)
+
+food <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/food-world-cup/food-world-cup-data.csv", encoding = "latin1", na = c("", "N/A"))
+
+options(scipen = 999)
+dim(food)
+```
+
+```{r}
+# Add column for the number of cuisines a respondent has tried
+food$tried <- rowSums( !is.na( food[,4:43] ) )
+
+# Get rid of extra text in cuisine rating column names
+countries <- sub("Please.rate.how.much.you.like.the.traditional.cuisine.of.", "", colnames(food[,4:43]))
+colnames(food)[4:43] <- countries
+
+# Set Factor Levels for Household.Income
+levels(food$Household.Income) <- c("$0 - $24,999","$25,000 - $49,999","$50,000 - $99,999","$100,000 - $149,999","$150,000+")
+
+# Remove NA's in the Gender and/or Household.Income columns and unneeded columns
+food2 <- food[complete.cases(food[, c(44,46)]), c(1,44,46,49)]
+```
+
+### Research question 
+
+**You should phrase your research question in a way that matches up with the scope of inference your dataset allows for.**
+
+Do gender or household income have any correlation with the number of cuisines a respondent has tried?
+
+### Cases 
+
+**What are the cases, and how many are there?**
+
+Each case represents a respondent in "[The FiveThirtyEight International Food Association’s 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/)". There `r nrow(food2)` observations in the data set.
+
+### Data collection 
+
+**Describe the method of data collection.**
+
+[FiveThirtyEight](http://fivethirtyeight.com/) "polled 1,373 Americans through [SurveyMonkey Audience](https://www.surveymonkey.com/mp/audience/) and asked them to rate the national cuisines of the 32 teams that qualified for the [2014] World Cup, as well as eight additional nations with bad soccer but great food: China, Cuba, Ethiopia, India, Ireland, Thailand, Turkey and Vietnam."
+
+### Type of study 
+
+**What type of study is this (observational/experiment)?**
+
+This is an observational study.
+
+### Data Source 
+
+**If you collected the data, state self-collected. If not, provide a citation/link.**
+
+Data was collected by [FiveThirtyEight](http://fivethirtyeight.com/) through [SurveyMonkey Audience](https://www.surveymonkey.com/mp/audience/) and is available in GitHub here:
+
+<https://github.com/fivethirtyeight/data/tree/master/food-world-cup>
+
+### Response 
+
+**What is the response variable, and what type is it (numerical/categorical)?**
+
+The response variable is the number of cuisines a respondent says they have tried.
+
+### Explanatory 
+
+**What is the explanatory variable, and what type is it (numerical/categorical)?**
+
+The explanatory variables are Gender (categorical) and household income (quantitative?).
+
+### Relevant summary statistics 
+
+**Provide summary statistics relevant to your research question. For example, if you’re comparing means across groups provide means, SDs, sample sizes of each group. This step requires the use of R, hence a code chunk is provided below. Insert more code chunks as needed.**
+
+```{r}
+table(food2$Gender)
+prop.table(table(food2$Gender))
+```
+```{r}
+table(food2$Household.Income)
+prop.table(table(food2$Household.Income))
+```
+
+```{r}
+ggplot(food2, aes(x=Household.Income)) + geom_bar()
+```
+
+```{r}
+men <- subset(food2,Gender == "Male")
+table(men$Household.Income)
+ggplot(men, aes(x=Household.Income)) + geom_bar()
+```
+
+```{r}
+women <- subset(food2,Gender == "Female")
+table(women$Household.Income)
+ggplot(women, aes(x=Household.Income)) + geom_bar()
+```
+
+```{r}
+describe(food2$tried)
+```
+
+```{r}
+ggplot(food2, aes(x=tried)) + geom_histogram(binwidth=5)
+```
+
