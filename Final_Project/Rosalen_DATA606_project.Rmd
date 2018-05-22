@@ -1,33 +1,407 @@
 ---
-title: DATA 606 Data Project Proposal
-author: 
+title: Food Adventurousness as a Function of Gender or Income?
+subtitle: "CUNY SPS DATA 606 Final Project"
+author: "Betsy Rosalen"
+date: "May 20, 2018"
+output:
+  html_document:
+    theme: cerulean
+    code_folding: hide
+    df_print: paged
+    toc: true
+    toc_float:
+     collapsed: false
+     smooth_scroll: false
+    css: ./reports.css
 ---
 
 
-```{r echo=FALSE}
-# load data
 
+```{r setup, include=FALSE, warning=FALSE, message=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+options(knitr.table.format = "html")
+
+# load data from fivethirtyeight.com
+library(tidyverse)
+library(psych)
+library(kableExtra)
+library(DT)
+
+food <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/food-world-cup/food-world-cup-data.csv", encoding = "latin1", na = c("", "N/A"))
+
+#food$Gender <- as.numeric(food$Gender)
+#food$Household.Income <- as.numeric(food$Household.Income)
+
+options(scipen = 999)
+
+# Add column for the number of cuisines a respondent has tried
+food$no_cuisines_tried <- rowSums( !is.na( food[,4:43] ) )
+
+# Get rid of extra text in cuisine rating column names
+countries <- sub("Please.rate.how.much.you.like.the.traditional.cuisine.of.", "", colnames(food[,4:43]))
+colnames(food)[4:43] <- countries
+
+# Set Factor Levels for Household.Income
+levels(food$Household.Income) <- c("$0 - $24,999","$25,000 - $49,999","$50,000 - $99,999","$100,000 - $149,999","$150,000+")
+
+# Remove NA's in the Gender and/or Household.Income columns and unneeded columns
+gender <- food[complete.cases(food[, c(44, 49)]), c(1,44,46,49)]
+income <- food[complete.cases(food[, c(46, 49)]), c(1,44,46,49)]
 ```
 
 
 ### Part 1 - Introduction:
 
+In 2014 [FiveThirtyEight](http://fivethirtyeight.com/) ran a food poll simultaneously with the World Cup to try to determine the best cuisines of the world.  They "polled 1,373 Americans through [SurveyMonkey Audience](https://www.surveymonkey.com/mp/audience/) and asked them to rate the national cuisines of the 32 teams that qualified for the [2014] World Cup, as well as eight additional nations with bad soccer but great food: China, Cuba, Ethiopia, India, Ireland, Thailand, Turkey and Vietnam." 
+
+The full list of countries are: 
+
+> `r names(food[4:43])`.
+
+Being an obsessive "foodie" who prides myself on having tried (and cooked) a large number of different cuisines, when I came across this dataset I was surprised to see that many of the respondents had not tried very many of the cuisines that they were asked to rate in the poll. I became interested in what factors lead to how adventurous or not people are in their food choices.  
+
+As someone who strongly believes that sharing food helps build relationships and can be a bridge to finding common ground, understanding, and appreciation between people and cultures, I thought it would be interesting to learn more about what factors impact how willing someone is to try food from different countries.  This is obviously not world changing information, but I thought it might provide some insight into how open Americans from different demographics are in general to other cultures.
+
+I narrowed down my research question in order to focus on questions that could be answered with the data provided in this dataset and so my question more specifically is, "Do gender or household income have any correlation with the number of cuisines a respondent has tried?" and "Is there a difference between the mean number of cuisines tried for men vs. women and for each household income bracket?"
 
 ### Part 2 - Data:
 
+Data was collected by [FiveThirtyEight](http://fivethirtyeight.com/) through [SurveyMonkey Audience](https://www.surveymonkey.com/mp/audience/) and is available in GitHub here:
+
+<https://github.com/fivethirtyeight/data/tree/master/food-world-cup>
+
+Each case in the FiveThirtyEight dataset represents a respondent in [The FiveThirtyEight International Food Association’s 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/). There are `r nrow(food)` observations in the data set.
+
+The **response variable** I will be investigating is `no_cuisines_tried`, a discrete numerical variable which represents the number of cuisines a respondent says they have tried.  I calculated `no_cuisines_tried` from the data by counting the number of cuisines rated by the respondent.
+
+The **explanatory variables** are `Gender`, a categorical variable with two possible values (Male or Female), and `Household.Income`, an ordered categorical variable based on income brackets. with the following possible values: `r levels(food$Household.Income)[1:4]` and `r levels(food$Household.Income)[5]`.
+
+The population of interest is all Americans.  [SurveyMonkey Audience](https://www.surveymonkey.com/mp/audience/) does allow you to specify the demographics of your target audience, but it is not clear what target audience [FiveThirtyEight](http://fivethirtyeight.com/) specified for their survey beyond "Americans".  As far as I can tell, the survey was not randomized or controlled in any way, so it is a simple observational study that cannot be used to determine causation, only correlation.  It's also difficult to say if the sample is representative of the population of all Americans, so it would be hard to generalize the findings of this analysis to all Americans either.
+
+I subsetted the data into two separate data.frames for `gender` and `income` since there were NA's in both fields, but many more in the `Household.Income` field than in `Gender`.  Rather than lose a few hundred cases for the analysis of gender as a predictor of the number of cuisines tried because of a missing income, I decided to subset for complete cases of each one separately.
 
 ### Part 3 - Exploratory data analysis:
 
+There are approximately equal numbers of men and women surveyed with approximately equal numbers of each gender in each income bracket as well.  There seems to be a disproportionate number of respondents who are in the highest income brackets however, possibly due to a bias in the sampling, or possibly due to untruthfulness on the part of respondents, especially considering that about `r round((1373-954)/1373 *100)`% of respondents chose not to even answer that question.  
+
+#### Subset by Gender
+
+There are slightly fewer male respondents than female respondents, but the difference in negligible. There are sufficient numbers of both genders and of each gender in each income bracket for the analysis.  
+
+```{r}
+# plot gender 
+ggplot(gender, aes(x=Gender)) +
+  geom_bar(color = "black", fill = "#9fa8da") +
+  ggtitle("Gender Distribution")
+
+kable(table(gender$Household.Income, gender$Gender, useNA='ifany')) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+```
+
+#### Subset by Income Bracket
+
+The plot below shows the disproportionate number of respondents who said they were in the highest income brackets.  I have serious doubts about the validity of this data unless there is a selection bias among [SurveyMonkey Audience](https://www.surveymonkey.com/mp/audience/) participants.  I find it hard to believe that so many people in the higher income brackets have time to fill out random surveys on SurveyMonkey.  I think it's more likely people on SurveyMonkey are not being honest about their income, although the survey is anonymous, so I don't see why so many people would bother to be dishonest about it.
+
+```{r}
+# plot income
+ggplot(income, aes(x=Household.Income)) +
+  geom_bar(color = "black", fill = "#9fa8da") +
+  ggtitle("Distribution of Income Brackets")
+
+kable(table(income$Household.Income, income$Gender, useNA='ifany')) %>% 
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+```
+
+#### Summary Statistics and Distribution of Cuisines Tried
+
+The summary statistics for both the gender and income subsets are almost exactly the same.  Both have a mean around 19, median around 18, and a standard deviation around 9.5.  Both subsets show a similar normal distribution of the number of cuisines tried with a slight uptick at the end of the right tail indicating that they had tried all 40 cuisines.  
+
+Once again I question the validity of this data.  I consider myself a very adventurous eater and a serious "foodie".  Additionally, I live in NYC where I can get almost any cuisine I want to try, and I actively search out different cuisines to try, yet I have not tried all the cuisines from the list of countries in the survey.  There are some pretty obscure cuisines listed, like Cameroon, so I'm a little surprised at how many people claim to have tried them all.  I've had West African cuisine, but to be so specific as to say it was from Cameroon? that I couldn't tell you...  Guess I have to try harder.  [Goals!]((http://www.unitednationsoffood.com/2016/01/nyc-unama-fundraiser-cameroon-libya-mozambique/))
+
+##### Gender Subset Summary Statistics and Distribution
+
+The plots below show that the majority or possibly all of the uptick on the right end of the distribution is from men.  The women's distribution is completely normal.  Other than that there doesn't seem to be much of a difference between the two distributions suggesting that there my not be any correlation between gender and number of cuisines tried.  
+
+```{r}
+gender.stats <- round(describe(gender$no_cuisines_tried), 2)
+kable(gender.stats[c(2,3,4,5,8,9,10,13)])  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+```
+
+```{r}
+ggplot(gender, aes(x=no_cuisines_tried)) +
+  geom_histogram(binwidth=5, color = "black", fill = "#9fa8da") + 
+  xlab("Number of Cuisines Tried") +
+  ggtitle("Distribution of Cuisines Tried for the Gender Subset")
+
+ggplot(gender, aes(x=no_cuisines_tried)) +
+  geom_histogram(binwidth=5, color = "black", fill = "#9fa8da") + 
+  ggtitle("Distribution of Cuisines Tried by Gender") +
+  xlab("Number of Cuisines Tried") +
+  facet_wrap(~Gender)
+```
+
+##### Income Bracket Subset Summary Statistics and Distribution
+
+Although they all appear mostly normal, the plots below show some variation in the shapes of the distributions when broken down by income bracket indicating that there may be some correlation between income bracket and the number of cuisines tried.   
+
+```{r}
+income.stats <- round(describe(income$no_cuisines_tried), 2)
+kable(income.stats[c(2,3,4,5,8,9,10,13)])  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+```
+
+```{r}
+ggplot(income, aes(x=no_cuisines_tried)) +
+  geom_histogram(binwidth=5, color = "black", fill = "#9fa8da") + 
+  xlab("Number of Cuisines Tried") +
+  ggtitle("Distribution of Cuisines Tried for the Income Bracket Subset")
+
+ggplot(income, aes(x=no_cuisines_tried)) +
+  geom_histogram(binwidth=5, color = "black", fill = "#9fa8da") + 
+  ggtitle("Distribution of Cuisines Tried by Income Bracket") +
+  xlab("Number of Cuisines Tried") +
+  facet_wrap(~Household.Income)
+```
 
 ### Part 4 - Inference:
 
+#### Gender Hypothesis Test 1
+
+$H_0$: There is no correlation between gender and the number of cuisines tried.
+
+$H_A$: There is a correlation between gender and the number of cuisines tried.
+
+###### Number of Cuisines Tried as a Function of Gender
+
+Even though the data meets the conditions for using a least squares linear regression model (linearity, constant variability, and nearly normal residuals) as evidenced by the residuals plots below...
+
+```{r}
+gender.mod <- lm(no_cuisines_tried ~ Gender, data = gender)
+
+par(mfrow=c(1,2))
+
+# Linearity and Constant Variability
+plot(gender.mod$residuals ~ gender$Gender, ylab="Residuals", xlab="Gender", 
+     main="Residual Plot", col=(c("#c5cae9","#7986cb")))
+abline(h = 0, lty = 3) 
+
+# Nearly Normal Residuals
+hist(gender.mod$residuals, breaks = 8, xlab="Residuals", main="Histogram of Residuals", col=("#9fa8da"))
+```
+
+...using a linear regression model does not seem to indicate a statistically significant correlation between gender and the number of cuisines tried.  The difference between genders is minimal indicating only a .9 increase in cuisines tried for males vs. females, and with a very small $R^2$ value of 0.0023 and a p-value of 0.0895, which exceeds a .05 significance level, there does not seem to be any statistical or practical significance of this difference.  
+
+```{r}
+summary(gender.mod)
+
+plot(gender$Gender, gender$no_cuisines_tried, main="Number of Cuisines Tried by Gender",
+     ylab="Number of Cuisines Tried", col=(c("#c5cae9","#7986cb")))
+
+ggplot(data=gender, aes(y=no_cuisines_tried, x=Gender)) +
+  geom_point(alpha=.25, position = "jitter") +
+  geom_abline(slope=gender.mod$coefficients[2], 
+				intercept=gender.mod$coefficients[1], color='blue', size=1, alpha=.5) +
+  ylab("Number of Cuisines Tried") +
+  xlab("Gender") +
+  ggtitle("Number of Cuisines Tried by Gender")
+```
+
+#### Gender Hypothesis Test 2
+
+$H_0$: There is no difference between the mean number of cuisines tried for men vs. women.
+
+$$\mu_{male} = \mu_{female}$$
+
+$H_A$: There is a difference between the mean number of cuisines tried for men vs. women.
+
+$$\mu_{male} \neq \mu_{female}$$
+
+Assuming that our sample was randomly selected (which is questionable in this case), we know that the sample is less than 10% of the population and each gender has more than 30 cases, and the male and female subsets of our sample are independent, and the normality condition is met based on the plots above, both groups meet the conditions for inference.
+
+###### Calculate a 95% confidence interval
+
+```{r}
+gender.stats2 <- describeBy(gender$no_cuisines_tried, group=gender$Gender, mat=TRUE, skew=FALSE)
+kable(gender.stats2[,c(2,4:6)])  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+```
+
+```{r include=FALSE}
+SE <- sqrt((gender.stats2$sd[2]^2/gender.stats2$n[2]) + (gender.stats2$sd[1]^2/gender.stats2$n[1]))
+```
+
+
+$$ SE_{ (\bar { x } _{ 1 }-\bar { x } _{ 2 }) }=\sqrt { \frac { { s }_{ M }^{ 2 } }{ { n }_{ M } } + \frac { { s }_{ F }^{ 2 } }{ { n }_{ F } }  } = \sqrt { \frac { `r gender.stats2$sd[2]`^2 }{ `r gender.stats2$n[2]`  } +\frac { `r gender.stats2$sd[1]`^2  }{ `r gender.stats2$n[1]`  }  } =  `r round(SE, 3)` $$
+
+```{r}
+lb <- (gender.stats2$mean[2] - gender.stats2$mean[1]) - 1.96 * SE
+ub <- (gender.stats2$mean[2] - gender.stats2$mean[1]) + 1.96 * SE
+```
+
+
+$$(`r gender.stats2$mean[2]` - `r gender.stats2$mean[1]`) \pm 1.96 \times `r SE` = (`r lb`, `r ub`)$$
+
+We can be 95% confident that the difference between the mean number of cuisines tried by males and the mean number of cuisines tried by females is between `r round(lb, 2)` and `r round(ub, 2)`.  Since this interval contains our null value, we would fail to reject the null hypothesis.
+
+#### Income Bracket Hypothesis Test 1
+
+$H_0$: There is no correlation between income bracket and the number of cuisines tried.
+
+$H_A$: There is an correlation between income bracket and the number of cuisines tried.
+
+##### Number of Cuisines Tried as a Function of Income Bracket
+
+The data meets the conditions for using a least squares linear regression model (linearity, constant variability, and nearly normal residuals) as evidenced by the residuals plots below.
+
+```{r}
+income.mod <- lm(no_cuisines_tried ~ Household.Income, data = income)
+
+par(mfrow=c(1,2))
+
+# Linearity and Constant Variability
+plot(income.mod$residuals ~ income$Household.Income, ylab="Residuals", xlab="", 
+     main="Residual Plot",
+     col=(c("#E8EAF6","#c5cae9","#9fa8da","#7986cb","#5c6bc0")),
+     xaxt = "n")
+abline(h = 0, lty = 3) 
+axis(side = 1, las=3, 
+     at = c(1,2,3,4,5),
+     labels = c("0-25k", "25-50k", "50-100k", "100-150k", "150k+"))
+
+# Nearly Normal Residuals
+hist(income.mod$residuals, breaks = 8, xlab="Residuals", main="Histogram of Residuals", col=("#9fa8da"))
+```
+
+The linear regression model seems to indicate a statistically significant correlation between income bracket and the number of cuisines tried.  The slopes for the various income brackets show an increase of 2.5 to 6.5 cuisines tried for each of the higher income brackets although they are not in order from lowest to highest so the relationship may not be linear.   The adjusted $R^2$ value is 0.027 indicating that 2.7% of the variance may be accounted for in our model, and the p-values for all income brackets are far below a .05 significance level.  
+
+```{r}
+summary(income.mod)
+
+plot(income$Household.Income, income$no_cuisines_tried, main="Number of Cuisines Tried by Income Bracket",
+     ylab="Number of Cuisines Tried", col=(c("#E8EAF6","#c5cae9","#9fa8da","#7986cb","#5c6bc0")))
+
+ggplot(data=income, aes(y=no_cuisines_tried, x=Household.Income, color=Household.Income), show.legend=FALSE) +
+  geom_point(alpha=.5, position = "jitter") +
+  geom_abline(slope=0, 
+				intercept=income.mod$coefficients[1], color='blue', size=1, alpha=.5) +
+  scale_color_manual(values=c("#1f2e84","black","black","black","black")) +
+  ylab("Number of Cuisines Tried") +
+  xlab("Income Bracket") +
+  theme(legend.position="none") +
+  ggtitle("Baseline $0 - $24,999 - Slope = 0")
+
+ggplot(data=income, aes(y=no_cuisines_tried, x=Household.Income, color=Household.Income)) +
+  geom_point(alpha=.5, position = "jitter") +
+  geom_abline(slope=income.mod$coefficients[2], 
+				intercept=income.mod$coefficients[1], color='blue', size=1, alpha=.5) +
+  scale_color_manual(values=c("black","#1f2e84","black","black","black")) +
+  ylab("Number of Cuisines Tried") +
+  xlab("Income Bracket") +
+  theme(legend.position="none") +
+  ggtitle("$25,000 - $49,999 - Slope = 3.5")
+
+ggplot(data=income, aes(y=no_cuisines_tried, x=Household.Income, color=Household.Income)) +
+  geom_point(alpha=.5, position = "jitter") +
+  geom_abline(slope=income.mod$coefficients[3], 
+				intercept=income.mod$coefficients[1], color='blue', size=1, alpha=.5) +
+  scale_color_manual(values=c("black","black","#1f2e84","black","black")) +
+  ylab("Number of Cuisines Tried") +
+  xlab("Income Bracket") +
+  theme(legend.position="none") +
+  ggtitle("$50,000 - $99,999 - Slope = 6.36")
+
+ggplot(data=income, aes(y=no_cuisines_tried, x=Household.Income, color=Household.Income)) +
+  geom_point(alpha=.5, position = "jitter") +
+  geom_abline(slope=income.mod$coefficients[4], 
+				intercept=income.mod$coefficients[1], color='blue', size=1, alpha=.5) +
+  scale_color_manual(values=c("black","black","black","#1f2e84","black")) +
+  ylab("Number of Cuisines Tried") +
+  xlab("Income Bracket") +
+  theme(legend.position="none") +
+  ggtitle("$100,000 - $149,999 - Slope = 2.87")
+
+ggplot(data=income, aes(y=no_cuisines_tried, x=Household.Income, color=Household.Income)) +
+  geom_point(alpha=.5, position = "jitter") +
+  geom_abline(slope=income.mod$coefficients[5], 
+				intercept=income.mod$coefficients[1], color='blue', size=1, alpha=.5) +
+  scale_color_manual(values=c("black","black","black","black", "#1f2e84")) +
+  ylab("Number of Cuisines Tried") +
+  xlab("Income Bracket") +
+  theme(legend.position="none") +
+  ggtitle("$150,000+ - Slope = 2.58")
+```
+
+
+
+#### Income Bracket Hypothesis Test 2
+
+$H_0$: There is no difference between the mean number of cuisines tried in each income bracket.
+
+$$H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5$$
+
+$H_A$: At least one mean is different.
+
+```{r}
+income.stats2 <- describeBy(income$no_cuisines_tried, group=income$Household.Income, mat=TRUE, skew=FALSE)
+kable(income.stats2[,c(2,4:6)])  %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F)
+```
+
+We have already confirmed that the conditions for inference have been met above.  The plots for each income bracket confirm that each group has a nearly normal distribution and that the variability across groups is about equal.  I am assuming independence since we know that the sample is less than 10% of the population and each group has more than 30 cases and that no case can belong to more than one group.
+
+###### Compare Groups with ANOVA
+
+```{r}
+library(granova)
+income.anova1 <- aov(no_cuisines_tried ~ Household.Income, data=income)
+summary(income.anova1)
+```
+
+```{r}
+income.anova2 <- granova.1w(income$no_cuisines_tried, group=income$Household.Income)
+```
+
+```{r}
+income.anova2
+```
+
+Our p-value is extremely low at 0.00000445. As a result we should reject the null hypothesis in favor of the alternative hypothesis.  There is statistical evidence that there is a difference in the mean number of cuisines tried between the income bracket groups.
+
+The Tukey range test can be used to create a set of confidence intervals on the differences between the means for all possible combinations of the 5 groups. The lowest ‘p adj’ values indicate the biggest difference in mean.
+
+```{r}
+tukey <- TukeyHSD(income.anova1, ordered=TRUE)
+tukey
+```
+
+The plot below shows that 5 of the 10 possible combinations of income bracket groups do not include 0 and so can be said with 95% confidence to show a statistically significant difference in means.
+
+```{r}
+par(mar=c(4,9,4,1)+0.1)
+plot(TukeyHSD(income.anova1),
+     cex.axis=0.5, las=2)
+```
 
 ### Part 5 - Conclusion: 
 
+There does not seem to be any practical or statistical difference in the number of cuisines tried by men vs. women.  There is, however, strong evidence of a statistical difference in the mean number of cuisines tried in the 5 income bracket groups in the analysis although the relationship does not appear to be linear.  The number of cuisines tried does not steadily increase with the increase in income.  
+
+Due to the uncertainty of the data collection process these findings cannot be generalized to the population of all Americans, but I would be curious to know if this holds true for the population.  I also think it would be interesting to expand the study to include three other possible predictor variables, `Age` `Location..Census.Region`, and `Education`.
 
 ### References:
 
+-Diez, D. M., Barr, C. D., & Çetinkaya-Rundel, M. (2015). Chapter 5: Inference for Numerical Data & Chapter 6: Inference for Categorical Data. In [OpenIntro Statistics (3rd ed.)](https://www.openintro.org/stat/textbook.php?stat_book=os)
 
-### Appendix (optional):
+[FiveThirtyEight](http://fivethirtyeight.com/)
 
-Remove this section if you don't have an appendix
+[SurveyMonkey Audience](https://www.surveymonkey.com/mp/audience/)
+
+<https://github.com/fivethirtyeight/data/tree/master/food-world-cup>
+
+[The FiveThirtyEight International Food Association’s 2014 World Cup](https://fivethirtyeight.com/features/the-fivethirtyeight-international-food-associations-2014-world-cup/)
+
+<https://www.datacamp.com/community/tutorials/15-questions-about-r-plots#q2>
+
+<https://www.rdocumentation.org/packages/stats/versions/3.5.0/topics/TukeyHSD>
